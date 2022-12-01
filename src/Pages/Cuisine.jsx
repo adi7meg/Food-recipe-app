@@ -7,24 +7,26 @@ const Cuisine = () => {
   let params = useParams();
 
   useEffect(() => {
-    getCuisine(params.type);
+    getCuisine(params.type);  //params.type comes from Pages.jsx  <Route path="/cuisine/:type" element={<Cuisine />} />
     console.log(params.type);
-  }, [params.type]);
+  }, [params.type]); //update every time we update state
 
   const getCuisine = async (name) => {
     const api = await fetch(
-      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&cuisine={name}`
+        `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian&recipes=${name}`
     );
-    const data = api.json();
-    setCuisine(data.results);
+    const data = await api.json();
+    setCuisine(data.recipes);
+    console.log("DATA:", data);
   };
 
   return (
+
     <Grid>
       {cuisine.map((item) => (
         <Cart key={item.id}>
           <img src={item.image} />
-          <p>{console.log(item.title)}</p>
+          <p>{item.title}</p>
         </Cart>
       ))}
     </Grid>
